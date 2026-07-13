@@ -30,8 +30,6 @@ def extract(file_path):
 
             if num >= 25:
                 for i, t in enumerate(split_text):
-                    id = f"{filename}_{num}_{i}"
-                    p["ids"].append(id)
                     p["text"].append(t)
                     p["metadata"].append(
                         {"page_number":num}
