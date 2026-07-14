@@ -12,5 +12,3 @@ def generate_context(top_k_chunks):
 
     token_number = len(encoder.encode(context))
     return context, token_number
-
-print(generate_context(top_k_chunks))

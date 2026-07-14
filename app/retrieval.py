@@ -17,4 +17,4 @@ def retrieval_and_reranking(session:Session, query:str, n:int=5):
     for score in top_k_idxs:
         top_k_ids.append(result["ids"][0][score])
     top_k_chunks = collection.get(ids=top_k_ids)
-    return query, top_k_chunks, n
+    return top_k_chunks, n
