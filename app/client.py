@@ -5,7 +5,7 @@ from ollama import chat
 from groq import Groq
 ENV = os.getenv("ENV")
 
-inference_client = Groq(api_key=os.environ.get("ARXIV_LENS_INFERENCE_KEY"))
+inference_client = Groq(api_key=os.environ.get("GROQ_INFERENCE_KEY"))
 
 SYSTEM_PROMPT = f"""
 You are a document assistant. The user has uploaded a document
