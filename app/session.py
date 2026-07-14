@@ -58,11 +58,17 @@ class SessionManager:
             name=f"doc_{session_id}",
             embedding_function=self.embed_fn,
         )
-        collection.add(
-            documents=chunks["text"],
-            ids=[f"{session_id}_{i}" for i in range(len(chunks))],
-            metadatas=chunks["metadata"]
-        )
+        texts = chunks["text"]
+        ids = [f"{session_id}_{i}" for i in range(len(texts))]
+        metadatas = chunks["metadata"]
+        batch_size = 512
+        for start in range(0, len(texts), batch_size):
+            end = start + batch_size
+            collection.add(
+                documents=texts[start:end],
+                ids=ids[start:end],
+                metadatas=metadatas[start:end]
+            )
 
         session = Session(
             session_id=session_id,

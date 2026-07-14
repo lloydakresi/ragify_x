@@ -6,14 +6,13 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
 def extract(file_path):
-    filename = Path(file_path).name
     splitter = RecursiveCharacterTextSplitter(
-    chunk_size=500,
-    chunk_overlap=75,
+    chunk_size=1750,
+    chunk_overlap=150,
     separators=["\n\n", "\n", ". ", " "]
     )
     p = {}
-    p["ids"], p["text"], p["metadata"] = [], [], []
+    p["text"], p["metadata"] = [], []
     #skipping the first 24 pages
     skips = 0
     with fitz.open(file_path) as doc:
@@ -39,7 +38,9 @@ def extract(file_path):
                 skips+=1
     return p, skips, num
 
-p, skips, num = extract("../corpus/d2l-en.pdf")
+
+"""
+p, skips, num = extract("corpus/d2l-en.pdf")
 print(f"Total number of pages:{num}")
 print(f"Pages skipped:{skips}")
 print(f"Total number of chunks: {len(p["ids"])}")
@@ -49,3 +50,4 @@ for x in p["text"]:
 
 average_chunk_len = total_char/len(p["ids"])
 print(f"Average chunk length: {average_chunk_len}")
+"""

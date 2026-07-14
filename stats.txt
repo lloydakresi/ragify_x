@@ -1,0 +1,5 @@
+#Statistics after running ingestion fxn on d2l-en.pdf
+Total number of pages:1151
+Pages skipped:24
+Total number of chunks: 5908
+Average chunk length: 399.28232904536225
