@@ -54,10 +54,13 @@ class SessionManager:
                 return s
 
         session_id = str(uuid.uuid4())
+        t = time.perf_counter()
         collection = self.client.create_collection(
             name=f"doc_{session_id}",
             embedding_function=self.embed_fn,
         )
+        print(f"    creating collection: {time.perf_counter()-t:.2f}s")
+        t = time.perf_counter()
         texts = chunks["text"]
         ids = [f"{session_id}_{i}" for i in range(len(texts))]
         metadatas = chunks["metadata"]
@@ -69,7 +72,7 @@ class SessionManager:
                 ids=ids[start:end],
                 metadatas=metadatas[start:end]
             )
-
+        print(f"  chromadb insert: {time.perf_counter()-t:.2f}s")
         session = Session(
             session_id=session_id,
             filename=filename,
