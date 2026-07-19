@@ -25,39 +25,42 @@ def ingest(file_path:str):
 
 
 def pipeline(session: Session, query: str) -> tuple[str, list[str]]:
-
-    t = time.perf_counter()
-    top_k_chunks, _ = retrieval_and_reranking(session, query)
-    print(f"Time to retrieve relevant chunks: {time.perf_counter() - t:.4f}s")
-
-    t = time.perf_counter()
-    context, _ = generate_context(top_k_chunks)
-    print(f"Time to generate context: {time.perf_counter() - t:.4f}s")
-
-    t = time.perf_counter()
-    history = build_history_string(session)
-    print(f"Time to generate history: {time.perf_counter() - t:.4f}s")
-
-    t = time.perf_counter()
-    response = generate(history, context, query)
-    print(f"Time to generate response: {time.perf_counter() - t:.4f}s")
-
-    print(response)
-    t = time.perf_counter()
-    follow_up_questions = follow_up(query, response)
-    print(follow_up_questions)
-    print(f"Time to generate follow-up questions: {time.perf_counter() - t:.4f}s")
-
-
-    if len(session.chat_history) + 2 == session.chat_history.maxlen:
+    try:
         t = time.perf_counter()
-        history_management(session)
-        print(f"Time to generate summary: {time.perf_counter() - t:.4f}s")
+        top_k_chunks, _ = retrieval_and_reranking(session, query)
+        print(f"Time to retrieve relevant chunks: {time.perf_counter() - t:.4f}s")
 
-    session.add_turn("user", query)
-    session.add_turn("assistant", response)
+        t = time.perf_counter()
+        context, _ = generate_context(top_k_chunks)
+        print(f"Time to generate context: {time.perf_counter() - t:.4f}s")
 
-    return response, follow_up_questions
+        t = time.perf_counter()
+        history = build_history_string(session)
+        print(f"Time to generate history: {time.perf_counter() - t:.4f}s")
+
+        t = time.perf_counter()
+        response = generate(history, context, query)
+        print(f"Time to generate response: {time.perf_counter() - t:.4f}s")
+
+        print(response)
+        t = time.perf_counter()
+        follow_up_questions = follow_up(query, response)
+        print(follow_up_questions)
+        print(f"Time to generate follow-up questions: {time.perf_counter() - t:.4f}s")
+
+
+        if len(session.chat_history) + 2 >= session.chat_history.maxlen:
+            t = time.perf_counter()
+            history_management(session)
+            print(f"Time to generate summary: {time.perf_counter() - t:.4f}s")
+
+        session.add_turn("user", query)
+        session.add_turn("assistant", response)
+
+        return response, follow_up_questions
+    except Exception as e:
+        print(f"Pipeline failed:{e}")
+        return "Something went wrong processing your question. Please try again.", []
 
 
 pipeline("corpus/d2l-en.pdf", "What embedding dimension and number of attention heads does the base BERT model use?")
