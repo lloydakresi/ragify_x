@@ -1,0 +1,10 @@
+chromadb==0.5.23
+pymupdf==1.24.9
+groq==0.9.0
+langchain-text-splitters==0.2.4
+ollama==0.3.3
+pdfplumber==0.11.4
+python-dotenv==1.0.1
+sentence-transformers==3.0.1
+tiktoken==0.7.0
+torch==2.4.1

@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "type": "factual",
+    "question": "What is the computational complexity of self-attention with respect to sequence length?",
+    "ideal_answer": "Self-attention has a computational complexity of O(n²d), where n is the sequence length and d is the dimensionality of the token representations. This quadratic complexity with respect to sequence length makes self-attention prohibitively slow for very long sequences.",
+    "source_page": 437
+  },
+  {
+    "id": 2,
+    "type": "factual",
+    "question": "How many attention heads does the MultiHeadAttention implementation in the book use in its toy example test?",
+    "ideal_answer": "The toy example test uses 5 attention heads, with num_hiddens set to 100 and num_heads set to 5.",
+    "source_page": 435
+  },
+  {
+    "id": 3,
+    "type": "factual",
+    "question": "What are the two pretraining tasks used in BERT?",
+    "ideal_answer": "BERT is pretrained on two tasks: masked language modeling and next sentence prediction.",
+    "source_page": 597
+  },
+  {
+    "id": 4,
+    "type": "factual",
+    "question": "What training configuration does the book use for the sequence to sequence model with Bahdanau attention?",
+    "ideal_answer": "The book trains the model with a learning rate of 0.005, gradient clipping at 1, for 30 epochs on 1 GPU, using a batch size of 128.",
+    "source_page": 430
+  },
+  {
+    "id": 5,
+    "type": "procedural",
+    "question": "What are the steps in the Transformer encoder block?",
+    "ideal_answer": "The Transformer encoder block performs the following steps: first, multi-head self-attention is applied to the input, then a residual connection is added and layer normalization is applied. Second, the result passes through a positionwise feed-forward network, followed by another residual connection and layer normalization. The residual connection requires that the two inputs have the same shape so the output tensor has the same shape after addition.",
+    "source_page": 444
+  },
+  {
+    "id": 6,
+    "type": "procedural",
+    "question": "How does the masked softmax operation handle sequences of different lengths in a minibatch?",
+    "ideal_answer": "The masked softmax operation limits the attention sum to only the valid tokens in each sequence. It sets the values of tokens beyond the valid length to zero and sets their attention weights to a very large negative number such as negative one million, so their contribution to gradients and values vanishes. This is faster than using conditional if-then-else statements because linear algebra kernels are optimized for GPUs.",
+    "source_page": 422
+  },
+  {
+    "id": 7,
+    "type": "procedural",
+    "question": "What steps does multi-head attention perform to compute its output?",
+    "ideal_answer": "Multi-head attention performs the following steps: queries, keys, and values are each transformed with h independently learned linear projections. These projected queries, keys, and values are then fed into attention pooling in parallel across all h heads. The h attention pooling outputs are concatenated and transformed with another learned linear projection via the output weight matrix to produce the final output.",
+    "source_page": 432
+  },
+  {
+    "id": 8,
+    "type": "procedural",
+    "question": "How is positional encoding computed and added to the input in the Transformer?",
+    "ideal_answer": "A positional embedding matrix P of the same shape as the input representation X is created. The element on the i-th row and the 2j-th column is sin(i divided by 10000 to the power of 2j over d) and the 2j+1 th column is cos(i divided by 10000 to the power of 2j over d). The positional encoding output is X plus P, after which dropout is applied.",
+    "source_page": 438
+  },
+  {
+    "id": 9,
+    "type": "comparative",
+    "question": "How does self-attention differ from cross-attention in the Transformer decoder?",
+    "ideal_answer": "In self-attention, the queries, keys, and values all come from the same place, meaning each token attends to every other token in the same sequence. In cross-attention in the Transformer decoder, the queries come from the outputs of the decoder self-attention sublayer, while the keys and values come from the Transformer encoder outputs. This allows the decoder to attend to the encoder representations of the input sequence while generating output tokens.",
+    "source_page": 441
+  },
+  {
+    "id": 10,
+    "type": "comparative",
+    "question": "How do CNNs, RNNs, and self-attention compare in terms of sequential operations and maximum path length?",
+    "ideal_answer": "CNNs have O(1) sequential operations and a maximum path length of O(n/k) where k is the kernel size. RNNs have O(n) sequential operations that cannot be parallelized and a maximum path length of O(n). Self-attention has O(1) sequential operations allowing full parallel computation and a maximum path length of O(1), meaning any two tokens are directly connected. However self-attention has a higher computational complexity of O(n²d) compared to O(nd²) for RNNs.",
+    "source_page": 437
+  },
+  {
+    "id": 11,
+    "type": "comparative",
+    "question": "How does layer normalization differ from batch normalization and why is layer normalization preferred in Transformers?",
+    "ideal_answer": "Batch normalization normalizes across the examples within a minibatch while layer normalization normalizes across the feature dimension. Layer normalization enjoys scale independence and batch size independence. Despite batch normalization being widely used in computer vision, layer normalization is usually empirically more effective in natural language processing tasks where inputs are often variable-length sequences.",
+    "source_page": 443
+  },
+  {
+    "id": 12,
+    "type": "comparative",
+    "question": "How does the Bahdanau attention mechanism differ from the fixed context vector approach in original sequence to sequence models?",
+    "ideal_answer": "In original sequence to sequence models, the entire input was compressed by the encoder into a single fixed-length context vector fed into the decoder. The Bahdanau attention mechanism dynamically updates the context variable at each decoding step as a function of both the encoder hidden states at all time steps and the decoder hidden state at the previous time step. This allows the decoder to selectively focus on different parts of the input sequence at each decoding step rather than always seeing the same fixed representation.",
+    "source_page": 428
+  },
+  {
+    "id": 13,
+    "type": "definitional",
+    "question": "What is attention pooling?",
+    "ideal_answer": "Attention pooling is the operation that computes a weighted sum of values from a database of key-value pairs, where the weights are determined by the compatibility between a query and each key. Formally, given a database of m key-value tuples and a query q, attention pooling computes the sum over all i of alpha(q, ki) times vi, where alpha(q, ki) are scalar attention weights. The name derives from the fact that the operation pays particular attention to terms for which the weight alpha is significant or large.",
+    "source_page": 412
+  },
+  {
+    "id": 14,
+    "type": "definitional",
+    "question": "What is positional encoding and why is it needed in the Transformer?",
+    "ideal_answer": "Positional encoding is additional input associated with each token that represents the order of tokens in a sequence. It is needed because unlike RNNs which process tokens sequentially and implicitly encode position, self-attention discards sequential operations in favor of parallel computation and by itself does not preserve the order of the sequence. Positional encodings can either be learned or fixed. The Transformer uses fixed encodings based on sine and cosine functions of different frequencies.",
+    "source_page": 437
+  },
+  {
+    "id": 15,
+    "type": "definitional",
+    "question": "What is scaled dot product attention?",
+    "ideal_answer": "Scaled dot product attention is an attention scoring function that computes the dot product between a query and a key and divides by the square root of the key dimensionality d. This scaling ensures that when all elements of the query and key are independent random variables with zero mean and unit variance, the variance of the dot product remains 1 regardless of vector length. The softmax is then applied to the scaled dot products to produce the attention weights.",
+    "source_page": 421
+  },
+  {
+    "id": 16,
+    "type": "definitional",
+    "question": "What is multi-head attention?",
+    "ideal_answer": "Multi-head attention is a design where instead of performing a single attention pooling, queries, keys, and values are transformed with h independently learned linear projections and fed into attention pooling in parallel. The h attention pooling outputs called heads are concatenated and transformed with another learned linear projection to produce the final output. This allows each head to attend to different parts of the input and capture dependencies of various ranges within a sequence.",
+    "source_page": 432
+  },
+  {
+    "id": 17,
+    "type": "out_of_scope",
+    "question": "What is the capital of France?",
+    "ideal_answer": "I could not find the answer to that question in the uploaded document.",
+    "source_page": null
+  },
+  {
+    "id": 18,
+    "type": "out_of_scope",
+    "question": "Who won the FIFA World Cup in 2022?",
+    "ideal_answer": "I could not find the answer to that question in the uploaded document.",
+    "source_page": null
+  },
+  {
+    "id": 19,
+    "type": "out_of_scope",
+    "question": "What is the current price of Nvidia stock?",
+    "ideal_answer": "I could not find the answer to that question in the uploaded document.",
+    "source_page": null
+  },
+  {
+    "id": 20,
+    "type": "out_of_scope",
+    "question": "How do I make jollof rice?",
+    "ideal_answer": "I could not find the answer to that question in the uploaded document.",
+    "source_page": null
+  }
+]
