@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 import chromadb
 from chromadb.utils import embedding_functions
-
+from collections import deque
 @dataclass
 class ChatTurn:
     role: str          # "user" or "assistant"
@@ -18,7 +18,7 @@ class Session:
     filename: str
     doc_hash: str
     collection: chromadb.Collection
-    chat_history: list[ChatTurn] = field(default_factory=list)
+    chat_history: deque[ChatTurn] = field(default_factory=lambda: deque(maxlen=7))
     created_at: float = field(default_factory=time.time)
     last_accessed: float = field(default_factory=time.time)
 
