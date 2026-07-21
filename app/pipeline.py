@@ -61,6 +61,3 @@ def pipeline(session: Session, query: str) -> tuple[str, list[str]]:
     except Exception as e:
         print(f"Pipeline failed:{e}")
         return "Something went wrong processing your question. Please try again.", []
-
-
-pipeline("corpus/d2l-en.pdf", "What embedding dimension and number of attention heads does the base BERT model use?")

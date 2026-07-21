@@ -2,12 +2,12 @@ import torch
 from sentence_transformers import CrossEncoder
 from .session import Session
 
-_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L6-v2", activation_fn=torch.nn.Sigmoid())
-def retrieval_and_reranking(session:Session, query:str, n:int=5):
+_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L6-v2")
+def retrieval_and_reranking(session:Session, query:str, n:int=7):
     collection = session.collection
     result = collection.query(
         query_texts = [query],
-        n_results = 50,
+        n_results = 75,
         include = ["documents"]
     )
     docs = result["documents"][0]
