@@ -6,7 +6,8 @@ def generate_context(top_k_chunks):
     text = top_k_chunks["documents"]
     metadatas = top_k_chunks["metadatas"]
     for i, c in enumerate(top_k_chunks["ids"]):
-        context += f"Page Number:{metadatas[i]["page_number"]}\n"
+        page_number = metadatas[i]["page_number"]
+        context += f"Page Number:{page_number}\n"
         context += f"{text[i]}\n"
         context += "*"*20
 

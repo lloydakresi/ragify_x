@@ -26,16 +26,11 @@ def extract(file_path):
             num = page.number + 1
 
             split_text = splitter.split_text(text)
-
-            if num >= 25:
-                for i, t in enumerate(split_text):
-                    p["text"].append(t)
-                    p["metadata"].append(
-                        {"page_number":num}
-                    )
-
-            else:
-                skips+=1
+            for t in split_text:
+                p["text"].append(t)
+                p["metadata"].append(
+                    {"page_number":num}
+                )
     return p, skips, num
 
 

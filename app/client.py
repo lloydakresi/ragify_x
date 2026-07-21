@@ -19,10 +19,10 @@ def llm(user_prompt: str, system_prompt: str = None) -> str:
 
     if ENV == "local":
         response = chat(
-            "llama3.1:8b",
+            "llama3.2:3b",
             messages=messages
         )
-        return response.message.content
+        return response["message"]["content"]
 
     elif ENV == "production":
         response = inference_client.chat.completions.create(
