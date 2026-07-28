@@ -1,0 +1,16 @@
+.env
+__pycache__
+*.pyc
+*.pyo
+.git
+.gitignore
+corpus/
+eval/
+tcm_trainer/
+ragify_x_env/
+*.ipynb
+.vscode/
+scripts/
+test/
+ui/
+haha.txt

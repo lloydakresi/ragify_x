@@ -17,4 +17,12 @@ def retrieval_and_reranking(session:Session, query:str, n:int=7):
     for score in top_k_idxs:
         top_k_ids.append(result["ids"][0][score])
     top_k_chunks = collection.get(ids=top_k_ids)
-    return top_k_chunks, n
+    normalized = [
+        {"id": id_, "text": doc, "metadata": meta}
+        for id_, doc, meta in zip(
+            top_k_chunks["ids"],
+            top_k_chunks["documents"],
+            top_k_chunks["metadatas"],
+        )
+    ]
+    return normalized, top_k_chunks, n

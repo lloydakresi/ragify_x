@@ -23,6 +23,8 @@ def extract(file_path):
             text = re.sub(r"\n{3,}", "\n\n", text)
             text = re.sub(r"(?m)^\d+\s*$", "", text)
             text = re.sub(r"-\n", "", text)
+            text = re.sub(r'\.{4,}', ' … ', text)      # collapse long dot-leader runs
+            text = re.sub(r'\s+', ' ', text).strip()
             num = page.number + 1
 
             split_text = splitter.split_text(text)

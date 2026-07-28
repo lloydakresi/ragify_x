@@ -55,7 +55,7 @@ class SessionManager:
 
         session_id = str(uuid.uuid4())
         t = time.perf_counter()
-        collection = self.client.create_collection(
+        collection = self.client.get_or_create_collection(
             name=f"doc_{session_id}",
             embedding_function=self.embed_fn,
         )
@@ -67,7 +67,7 @@ class SessionManager:
         batch_size = 512
         for start in range(0, len(texts), batch_size):
             end = start + batch_size
-            collection.add(
+            collection.upsert(
                 documents=texts[start:end],
                 ids=ids[start:end],
                 metadatas=metadatas[start:end]

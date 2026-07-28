@@ -6,10 +6,11 @@ from .generate import generate
 from .history import history_management, build_history_string
 from .follow_up import follow_up
 import time
-
+import os
 manager = SessionManager()
 
 def ingest(file_path:str):
+    display_name = os.path.basename(file_path)
     t = time.perf_counter()
     chunks, _, _ = extract(file_path)
     print(f"Time to extract {file_path}: {time.perf_counter() - t:.4f}s")
@@ -19,7 +20,7 @@ def ingest(file_path:str):
     print(f"Time to convert file into bytes: {time.perf_counter() - t:.4f}s")
     t = time.perf_counter()
 
-    session = manager.create_session(file_path, file_bytes, chunks)
+    session = manager.create_session(display_name, file_bytes, chunks)
     print(f"Time to create session: {time.perf_counter() - t:.4f}s")
     return session
 
@@ -27,7 +28,7 @@ def ingest(file_path:str):
 def pipeline(session: Session, query: str) -> tuple[str, list[str]]:
     try:
         t = time.perf_counter()
-        top_k_chunks, _ = retrieval_and_reranking(session, query)
+        normalized_chunks, top_k_chunks, _ = retrieval_and_reranking(session, query)
         print(f"Time to retrieve relevant chunks: {time.perf_counter() - t:.4f}s")
 
         t = time.perf_counter()
@@ -57,7 +58,7 @@ def pipeline(session: Session, query: str) -> tuple[str, list[str]]:
         session.add_turn("user", query)
         session.add_turn("assistant", response)
 
-        return response, follow_up_questions
+        return response, follow_up_questions, normalized_chunks
     except Exception as e:
         print(f"Pipeline failed:{e}")
         return "Something went wrong processing your question. Please try again.", []
