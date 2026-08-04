@@ -1,3 +1,4 @@
+
 import gradio as gr
 import html
 from app.pipeline import ingest, pipeline, manager
@@ -7,6 +8,7 @@ CSS = """
 
     /* ============ DESIGN TOKENS ============ */
     #app_body {
+
         --paper: #F1F4F7;
         --paper-deep: #E7ECF1;
         --ink: #17212B;
@@ -535,7 +537,7 @@ def handle_follow_up_click(choice, history, session, active_id, sessions_meta, s
     yield from handle_submit({"text": choice, "files": []}, history, session, active_id, sessions_meta, session_data_dict)
 
 
-with gr.Blocks(title="RAGify", fill_height=True, fill_width=True) as app:
+with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", title="RAGify", fill_height=True, fill_width=True) as demo:
     session_state = gr.State(None)
     active_session_id = gr.State(None)
     sessions_meta = gr.State({})
@@ -575,7 +577,7 @@ with gr.Blocks(title="RAGify", fill_height=True, fill_width=True) as app:
                         )
 
             with gr.Column(elem_id="chat") as middle:
-                chatbot = gr.Chatbot(elem_id="chatbot", like_user_message=True)
+                chatbot = gr.Chatbot(elem_id="chatbot", type="messages")
                 follow_up_radio = gr.Radio(label="Follow-up questions", visible=False)
 
                 chat_input = gr.MultimodalTextbox(
@@ -583,7 +585,6 @@ with gr.Blocks(title="RAGify", fill_height=True, fill_width=True) as app:
                     file_count="multiple",
                     placeholder="Enter message or upload file...",
                     show_label=False,
-                    sources=["upload"],
                 )
 
             with gr.Column(elem_id="right_sidebar") as right:
@@ -637,4 +638,4 @@ with gr.Blocks(title="RAGify", fill_height=True, fill_width=True) as app:
                 "<h3>Made with ❤️ in 🇬🇭</h3>"
             )
 
-app.launch(css=CSS, js="() => { document.body.classList.remove('dark'); }")
+demo.launch()
