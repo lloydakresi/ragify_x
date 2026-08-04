@@ -409,50 +409,67 @@ CSS = """
 
     /* ============ RESPONSIVE LAYOUT (TABLET & MOBILE) ============ */
     @media (max-width: 992px) {
-        #app_body {
-            height: 100dvh !important;
-            display: block !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-        }
-        #main {
-            display: flex !important;
-            flex-direction: column !important;
-            height: auto !important;
-            padding: 12px;
-            gap: 16px;
-        }
-
-        #left_sidebar, #right_sidebar {
-            width: 100% !important;
-            flex: none !important;
-            height: auto !important;
-            min-height: 250px;
-            max-height: 500px;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            display: block !important;
-        }
-
-        #chat {
-            width: 100% !important;
-            flex: none !important;
-            height: 65vh !important;
-            min-height: unset !important;
-            max-height: 65vh !important;
-            overflow-y: scroll !important;
-        }
-        #header {
-            padding: 16px 16px 12px 16px;
-        }
+    #app_body {
+        height: auto !important;
+        min-height: 100dvh !important;
+        display: block !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
 
-    @media (max-width: 480px) {
-        #header h1 { font-size: 1.6rem; }
-        #header p { font-size: 0.85rem; }
-        .source-chunk { font-size: 0.8rem; }
-        .typing-indicator, .upload-indicator { font-size: 0.85em; }
+    #main {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        padding: 12px !important;
+        gap: 12px !important;
+        overflow: visible !important;
     }
+
+    #left_sidebar {
+        width: 100% !important;
+        flex: none !important;
+        height: auto !important;
+        max-height: 200px !important;
+        overflow-y: auto !important;
+    }
+
+    #chat {
+        width: 100% !important;
+        flex: none !important;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: unset !important;
+        overflow: visible !important;
+    }
+
+    #chatbot {
+        height: 400px !important;
+        max-height: 400px !important;
+        min-height: unset !important;
+        overflow-y: scroll !important;
+    }
+
+    #right_sidebar {
+        width: 100% !important;
+        flex: none !important;
+        height: auto !important;
+        max-height: 300px !important;
+        overflow-y: auto !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #chatbot {
+        height: 350px !important;
+        max-height: 350px !important;
+    }
+
+    #header h1 { font-size: 1.6rem; }
+    #header p { font-size: 0.85rem; }
+    .source-chunk { font-size: 0.8rem; }
+    .typing-indicator, .upload-indicator { font-size: 0.85em; }
+}
 """
 
 THINKING_HTML = """<span class="typing-indicator">Thinking<span class="dot"></span><span class="dot"></span><span class="dot"></span></span>"""
@@ -579,7 +596,7 @@ with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", 
                         )
 
             with gr.Column(elem_id="chat") as middle:
-                chatbot = gr.Chatbot(elem_id="chatbot", type="messages")
+                chatbot = gr.Chatbot(elem_id="chatbot", type="messages", height="80%", show_label=False)
                 follow_up_radio = gr.Radio(label="Follow-up questions", visible=False)
 
                 chat_input = gr.MultimodalTextbox(
