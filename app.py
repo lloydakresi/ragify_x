@@ -235,9 +235,7 @@ CSS = """
         display: flex !important;
         flex-direction: column !important;
         flex: 8.5 !important;
-        height: auto !important;
-        min-height: unset !important;
-        max-height: unset !important;
+        height: 100% !important;
         overflow-y: scroll;
     }
 
