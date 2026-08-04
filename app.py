@@ -435,7 +435,7 @@ CSS = """
         }
 
         #chat {
-            wwidth: 100% !important;
+            width: 100% !important;
             flex: none !important;
             height: 65vh !important;
             min-height: unset !important;
