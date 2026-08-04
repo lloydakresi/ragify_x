@@ -596,7 +596,7 @@ with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", 
                         )
 
             with gr.Column(elem_id="chat") as middle:
-                chatbot = gr.Chatbot(elem_id="chatbot", type="messages", height="80%", show_label=False)
+                chatbot = gr.Chatbot(elem_id="chatbot", type="messages", height="500", show_label=False)
                 follow_up_radio = gr.Radio(label="Follow-up questions", visible=False)
 
                 chat_input = gr.MultimodalTextbox(

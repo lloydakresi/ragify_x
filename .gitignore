@@ -220,4 +220,4 @@ __marimo__/
 .vscode/
 corpus/
 .Dockerfile
-haha.txt
+*.txt
