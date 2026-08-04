@@ -2,7 +2,7 @@ import torch
 from sentence_transformers import CrossEncoder
 from .session import Session
 
-_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L6-v2")
+_model = CrossEncoder("cross-encoder/ms-marco-MiniLM-L6-v2", device="cpu")
 def retrieval_and_reranking(session:Session, query:str, n:int=7):
     collection = session.collection
     result = collection.query(

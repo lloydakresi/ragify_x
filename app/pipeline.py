@@ -67,4 +67,4 @@ def pipeline(session: Session, query: str) -> tuple[str, list[str]]:
         return response, follow_up_questions, normalized_chunks
     except Exception as e:
         print(f"Pipeline failed:{e}")
-        return "Something went wrong processing your question. Please try again.", []
+        return "Something went wrong processing your question. Please try again.", [], []

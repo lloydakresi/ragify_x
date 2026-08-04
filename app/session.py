@@ -34,7 +34,8 @@ class SessionManager:
     def __init__(self, max_sessions: int = 10, ttl_seconds: int = 3600):
         self.client = chromadb.EphemeralClient()  # in-memory
         self.embed_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-            model_name="all-MiniLM-L6-v2"
+            model_name="all-MiniLM-L6-v2",
+            device="cpu"
         )
         self.sessions: dict[str, Session] = {}
         self.max_sessions = max_sessions
