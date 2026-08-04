@@ -12,6 +12,10 @@ import os
 manager = SessionManager()
 
 @spaces.GPU
+def _gpu_placeholder():
+    pass
+
+
 def ingest(file_path:str):
     display_name = os.path.basename(file_path)
     t = time.perf_counter()
@@ -27,7 +31,6 @@ def ingest(file_path:str):
     print(f"Time to create session: {time.perf_counter() - t:.4f}s")
     return session
 
-@spaces.GPU
 def pipeline(session: Session, query: str) -> tuple[str, list[str]]:
     try:
         t = time.perf_counter()
