@@ -435,10 +435,12 @@ CSS = """
         }
 
         #chat {
-            width: 100% !important;
+            wwidth: 100% !important;
             flex: none !important;
-            height: auto !important;
-            min-height: 65vh !important;
+            height: 65vh !important;
+            min-height: unset !important;
+            max-height: 65vh !important;
+            overflow-y: scroll !important;
         }
         #header {
             padding: 16px 16px 12px 16px;
@@ -537,7 +539,7 @@ def handle_follow_up_click(choice, history, session, active_id, sessions_meta, s
     yield from handle_submit({"text": choice, "files": []}, history, session, active_id, sessions_meta, session_data_dict)
 
 
-with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", title="RAGify", fill_height=True, fill_width=True) as demo:
+with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", title="RAGify", fill_width=True) as demo:
     session_state = gr.State(None)
     active_session_id = gr.State(None)
     sessions_meta = gr.State({})
