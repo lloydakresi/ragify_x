@@ -11,7 +11,7 @@ Built as Project 3 of 4 in a production ML portfolio. v2 adds multimodal support
 
 ## What It Does
 
-Standard document search is keyword based. If you do not use the exact right words you miss relevant content. RAGify uses semantic search to find content by meaning, not by word match. The answers are grounded strictly in the uploaded document — the model cannot draw on outside knowledge, which means citations are always traceable and hallucinations are structurally prevented rather than just prompted away.
+Standard document search is keyword based. If you do not use the exact right words you miss relevant content. RAGify uses semantic search to find content by meaning, not by word match. The answers are grounded strictly in the uploaded document; the model cannot draw on outside knowledge, which means citations are always traceable and hallucinations are structurally prevented rather than just prompted away.
 
 ---
 
@@ -56,7 +56,7 @@ Each session gets its own isolated in-memory ChromaDB collection that is discard
 | Context recall | 0.7417 | Does retrieval find all relevant content in the document |
 | Answer relevancy | NaN | Skipped — requires an embedding model incompatible with current setup |
 
-Faithfulness of 0.897 means the model stays grounded in the retrieved context for nearly 90% of claims. Context precision of 0.941 means the retrieve and rerank pipeline is returning highly relevant chunks. Context recall of 0.742 indicates some relevant content is occasionally missed — expected for a document as dense as D2L where the same concept appears across many sections.
+Faithfulness of 0.897 means the model stays grounded in the retrieved context for nearly 90% of claims. Context precision of 0.941 means the retrieve and rerank pipeline is returning highly relevant chunks. Context recall of 0.742 indicates some relevant content is occasionally missed, which is expected for a document as dense as D2L where the same concept appears across many sections.
 
 ---
 
