@@ -1,3 +1,4 @@
+
 import gradio as gr
 import html
 from app.pipeline import ingest, pipeline, manager
@@ -7,6 +8,7 @@ CSS = """
 
     /* ============ DESIGN TOKENS ============ */
     #app_body {
+
         --paper: #F1F4F7;
         --paper-deep: #E7ECF1;
         --ink: #17212B;
@@ -33,9 +35,11 @@ CSS = """
         --button-secondary-background-fill: var(--paper-deep);
         --button-secondary-border-color: var(--line);
         --input-background-fill: #FFFFFF;
+
         --input-text-color: var(--input-box-text);
         --input-text-weight: 500;
         --input-placeholder-color: var(--ink-soft);
+
         --block-border-color: var(--line);
         --block-radius: var(--radius-md);
         --font: 'Inter', sans-serif;
@@ -44,12 +48,10 @@ CSS = """
         display: flex !important;
         flex-direction: column !important;
         flex-wrap: nowrap !important;
-        /* FIX 1: use 100dvh so the whole app fits the viewport on desktop */
-        height: 100dvh !important;
-        max-height: 100dvh !important;
+        height: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
-        overflow: hidden !important;
+        overflow-y: scroll !important;
         background: var(--paper) !important;
         color: var(--ink);
     }
@@ -80,7 +82,9 @@ CSS = """
         border: 1px solid var(--trace-deep) !important;
         color: #FFFFFF !important;
     }
-    .message-wrap .user * { color: #FFFFFF !important; }
+    .message-wrap .user * {
+        color: #FFFFFF !important;
+    }
     .message-wrap .bot {
         background-color: #FFFFFF !important;
         border: 1px solid var(--line) !important;
@@ -89,11 +93,11 @@ CSS = """
 
     /* ============ HEADER ============ */
     #header {
-        flex: 0 0 auto !important;
         display: flex;
+        flex: 1;
         flex-direction: column;
         justify-content: center;
-        padding: 20px 0 14px 20px;
+        padding: 24px 0 16px 20px;
         border-bottom: 1px solid var(--line);
         background: var(--paper);
     }
@@ -124,28 +128,29 @@ CSS = """
         text-align: left;
         margin: 6px 0 0 18px;
         font-size: 0.92rem;
+        font-weight: 400;
+        font-family: "Inter", sans-serif;
         color: var(--ink-soft);
+        letter-spacing: -0.01em;
     }
 
     /* ============ MAIN LAYOUT ============ */
     #main {
-        /* FIX 2: flex: 1 with min-height: 0 forces the row to fill
-           remaining space without growing beyond the viewport */
-        flex: 1 1 0 !important;
-        min-height: 0 !important;
+        height: auto !important;
+        flex: 8 !important;
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
         gap: 16px;
         padding: 16px 20px;
         box-sizing: border-box;
-        overflow: hidden !important;
+        overflow-y: auto !important;
+        justify-content: center !important;
     }
 
     /* ============ LEFT SIDEBAR ============ */
     #left_sidebar {
-        flex: 0 0 220px !important;
-        min-width: 0;
+        min-width: 220px;
         background: var(--paper-deep);
         border: 1px solid var(--line);
         border-radius: var(--radius-md);
@@ -153,8 +158,6 @@ CSS = """
         display: flex;
         flex-direction: column;
         gap: 4px;
-        overflow-y: auto;
-        overflow-x: hidden;
     }
 
     #left_sidebar h3 {
@@ -169,7 +172,7 @@ CSS = """
 
     #left_sidebar .prose,
     #left_sidebar .prose p {
-        margin: 4px !important;
+        margin: 4px 4px 4px 4px !important;
         padding: 0 !important;
         font-family: "Inter", sans-serif;
         font-size: 0.85rem;
@@ -223,13 +226,6 @@ CSS = """
 
     /* ============ CENTER CHAT ============ */
     #chat {
-        /* FIX 3: flex: 1 with min-width: 0 and min-height: 0 lets the
-           column fill available space without overflowing. No fixed height
-           needed — the column stretches to fill #main which is already
-           constrained by the viewport. */
-        flex: 1 1 0 !important;
-        min-width: 0 !important;
-        min-height: 0 !important;
         background:
             linear-gradient(var(--paper) 0%, var(--paper) 100%),
             repeating-linear-gradient(0deg, rgba(34,85,196,0.045) 0px, rgba(34,85,196,0.045) 1px, transparent 1px, transparent 28px),
@@ -238,35 +234,16 @@ CSS = """
         border-radius: var(--radius-md) !important;
         display: flex !important;
         flex-direction: column !important;
-        overflow: hidden !important;
+        flex: 8.5 !important;
+        height: 100% !important;
+        overflow-y: scroll;
     }
 
-    #chat > .gradio-column,
-    #chat > div {
-        flex: 1 1 0 !important;
-        min-height: 0 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        height: 100% !important;
-    }
-    /* FIX 4: the chatbot div itself gets flex: 1 and overflow-y: auto
-       so IT scrolls, not the window */
     #chatbot {
         background: transparent !important;
         border: none !important;
-        flex: 1 1 0 !important;
+        flex-grow: 1 !important;
         min-height: 0 !important;
-        overflow-y: auto !important;
-    }
-
-    /* Gradio wraps the chatbot in several divs — make them all flex-fill */
-    #chatbot,
-    #chatbot > div,
-    #chatbot > div > div {
-        flex: 1 1 0 !important;
-        min-height: 0 !important;
-        height: 100% !important;
-        overflow-y: auto !important;
     }
 
     #chat button {
@@ -274,13 +251,6 @@ CSS = """
         background: #FFFFFF !important;
         border: 1px solid var(--line) !important;
         opacity: 1 !important;
-    }
-
-    #chatbot .bubble-wrap {
-    flex: 1 1 0 !important;
-    min-height: 0 !important;
-    height: 100% !important;
-    overflow-y: auto !important;
     }
 
     #chat button:hover {
@@ -337,14 +307,14 @@ CSS = """
     /* ============ RIGHT SIDEBAR ============ */
     #right_sidebar {
         flex: 0 0 240px !important;
-        min-width: 0;
-        min-height: 0 !important;
+        min-width: 240px;
         background: var(--paper-deep);
         border: 1px solid var(--line) !important;
         border-radius: var(--radius-md) !important;
         padding: 16px 14px;
         overflow-y: auto !important;
         overflow-x: hidden !important;
+        display: block !important;
         box-sizing: border-box !important;
     }
 
@@ -365,6 +335,8 @@ CSS = """
         letter-spacing: 0.08em;
         color: var(--ink-soft);
         margin: 0 0 12px 0;
+        width: 100%;
+        text-align: left;
         display: block !important;
     }
 
@@ -384,6 +356,7 @@ CSS = """
         padding: 10px 12px 10px 14px;
         margin-bottom: 10px !important;
         font-size: 0.85em;
+        animation: source-in 0.25s ease-out;
         display: block !important;
         width: 100% !important;
         box-sizing: border-box !important;
@@ -414,13 +387,14 @@ CSS = """
 
     /* ============ FOOTER ============ */
     #footer {
-        flex: 0 0 auto !important;
+        flex: 0.4 !important;
         border-top: 1px solid var(--line) !important;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 10px 0;
         background: var(--paper);
+        z-index: 100 !important;
+        flex: 1 !important;
     }
 
     #footer h3 {
@@ -433,56 +407,69 @@ CSS = """
         margin: 0 !important;
     }
 
-    /* ============ MOBILE ============ */
+    /* ============ RESPONSIVE LAYOUT (TABLET & MOBILE) ============ */
     @media (max-width: 992px) {
-        #app_body {
-            height: auto !important;
-            max-height: none !important;
-            min-height: 100dvh !important;
-            overflow: auto !important;
-        }
-
-        #main {
-            flex-direction: column !important;
-            overflow: visible !important;
-            height: auto !important;
-            min-height: 0 !important;
-        }
-
-        #left_sidebar {
-            flex: none !important;
-            width: 100% !important;
-            max-height: 200px !important;
-        }
-
-        #chat {
-            flex: none !important;
-            width: 100% !important;
-            height: auto !important;
-            min-height: 0 !important;
-            overflow: visible !important;
-        }
-
-        #chatbot {
-            height: 420px !important;
-            max-height: 420px !important;
-            overflow-y: auto !important;
-        }
-
-        #right_sidebar {
-            flex: none !important;
-            width: 100% !important;
-            max-height: 300px !important;
-        }
+    #app_body {
+        height: auto !important;
+        min-height: 100dvh !important;
+        display: block !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
 
-    @media (max-width: 480px) {
-        #chatbot { height: 360px !important; max-height: 360px !important; }
-        #header h1 { font-size: 1.6rem; }
-        #header p { font-size: 0.85rem; }
-        .source-chunk { font-size: 0.8rem; }
-        .typing-indicator, .upload-indicator { font-size: 0.85em; }
+    #main {
+        display: flex !important;
+        flex-direction: column !important;
+        height: auto !important;
+        padding: 12px !important;
+        gap: 12px !important;
+        overflow: visible !important;
     }
+
+    #left_sidebar {
+        width: 100% !important;
+        flex: none !important;
+        height: auto !important;
+        max-height: 200px !important;
+        overflow-y: auto !important;
+    }
+
+    #chat {
+        width: 100% !important;
+        flex: none !important;
+        height: auto !important;
+        min-height: unset !important;
+        max-height: unset !important;
+        overflow: visible !important;
+    }
+
+    #chatbot {
+        height: 400px !important;
+        max-height: 400px !important;
+        min-height: unset !important;
+        overflow-y: scroll !important;
+    }
+
+    #right_sidebar {
+        width: 100% !important;
+        flex: none !important;
+        height: auto !important;
+        max-height: 300px !important;
+        overflow-y: auto !important;
+    }
+}
+
+@media (max-width: 480px) {
+    #chatbot {
+        height: 350px !important;
+        max-height: 350px !important;
+    }
+
+    #header h1 { font-size: 1.6rem; }
+    #header p { font-size: 0.85rem; }
+    .source-chunk { font-size: 0.8rem; }
+    .typing-indicator, .upload-indicator { font-size: 0.85em; }
+}
 """
 
 THINKING_HTML = """<span class="typing-indicator">Thinking<span class="dot"></span><span class="dot"></span><span class="dot"></span></span>"""
@@ -496,10 +483,14 @@ def switch_session(sid, session_data_dict):
     if session is None:
         gr.Warning("This session is no longer available.")
         return [], None, None, gr.update(choices=[], visible=False), []
+
+    # Check if we have saved follow-ups and sources for this specific session
     data = session_data_dict.get(sid, {})
     saved_follow_ups = data.get("follow_ups", [])
     saved_sources = data.get("sources", [])
+
     radio_update = gr.update(choices=saved_follow_ups, value=None, visible=bool(saved_follow_ups))
+
     return _history_from_session(session), session, sid, radio_update, saved_sources
 
 def start_new_chat():
@@ -523,6 +514,7 @@ def handle_submit(message, history, session, active_id, sessions_meta, session_d
         session = ingest(files[0])
         history[-1]["content"] = f"Loaded **{session.filename}** — ask away."
         active_id = session.session_id
+
         sessions_meta = dict(sessions_meta)
         sessions_meta[active_id] = session.filename
 
@@ -541,14 +533,23 @@ def handle_submit(message, history, session, active_id, sessions_meta, session_d
     response, follow_ups, sources = pipeline(session, text)
     history[-1]["content"] = response
 
+    # Update the session data dictionary so we remember these values if the user switches back
     session_data_dict = dict(session_data_dict)
     if active_id:
-        session_data_dict[active_id] = {"follow_ups": follow_ups, "sources": sources}
+        session_data_dict[active_id] = {
+            "follow_ups": follow_ups,
+            "sources": sources
+        }
 
     yield (
-        history, session, active_id, sessions_meta, clear_input,
+        history,
+        session,
+        active_id,
+        sessions_meta,
+        clear_input,
         gr.update(choices=follow_ups, value=None, visible=bool(follow_ups)),
-        sources, session_data_dict
+        sources,
+        session_data_dict
     )
 
 def handle_follow_up_click(choice, history, session, active_id, sessions_meta, session_data_dict):
@@ -560,15 +561,19 @@ with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", 
     active_session_id = gr.State(None)
     sessions_meta = gr.State({})
     current_sources = gr.State([])
+
+    # State mapping session IDs to their last follow_ups and sources
     session_data = gr.State({})
 
     with gr.Row(elem_id="app_body") as body:
+        # Header
         with gr.Row(elem_id="header") as header:
             gr.HTML(
                 "<h1>RAGify</h1>"
                 "<p>Per-document Q&A, powered by retrieval.</p>"
             )
 
+        # Main Layout
         with gr.Row(elem_id="main") as main:
             with gr.Column(elem_id="left_sidebar") as left:
                 new_chat_btn = gr.Button("+ New chat", elem_id="new_chat_btn")
@@ -591,9 +596,9 @@ with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", 
                         )
 
             with gr.Column(elem_id="chat") as middle:
-                # FIX 5: pass height as integer, not string
                 chatbot = gr.Chatbot(elem_id="chatbot", type="messages", height=500, show_label=False)
                 follow_up_radio = gr.Radio(label="Follow-up questions", visible=False)
+
                 chat_input = gr.MultimodalTextbox(
                     interactive=True,
                     file_count="multiple",
@@ -609,6 +614,7 @@ with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", 
                     if not sources:
                         gr.Markdown("_No sources for this answer yet_")
                         return
+
                     with gr.Column(elem_classes="sources-column"):
                         for i, src in enumerate(sources):
                             if isinstance(src, dict):
@@ -628,6 +634,7 @@ with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", 
                             """
                             gr.HTML(html_content)
 
+        # Triggers
         new_chat_btn.click(
             start_new_chat,
             outputs=[chatbot, session_state, active_session_id, chat_input, follow_up_radio, current_sources],
@@ -646,6 +653,8 @@ with gr.Blocks(css=CSS, js="() => { document.body.classList.remove('dark'); }", 
         )
 
         with gr.Row(elem_id="footer") as footer:
-            gr.HTML("<h3>Made with ❤️ in 🇬🇭</h3>")
+            gr.HTML(
+                "<h3>Made with ❤️ in 🇬🇭</h3>"
+            )
 
 demo.launch()
