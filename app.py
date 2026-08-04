@@ -241,6 +241,14 @@ CSS = """
         overflow: hidden !important;
     }
 
+    #chat > .gradio-column,
+    #chat > div {
+        flex: 1 1 0 !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+    }
     /* FIX 4: the chatbot div itself gets flex: 1 and overflow-y: auto
        so IT scrolls, not the window */
     #chatbot {
@@ -252,10 +260,13 @@ CSS = """
     }
 
     /* Gradio wraps the chatbot in several divs — make them all flex-fill */
+    #chatbot,
     #chatbot > div,
     #chatbot > div > div {
-        height: 100% !important;
+        flex: 1 1 0 !important;
         min-height: 0 !important;
+        height: 100% !important;
+        overflow-y: auto !important;
     }
 
     #chat button {
@@ -263,6 +274,13 @@ CSS = """
         background: #FFFFFF !important;
         border: 1px solid var(--line) !important;
         opacity: 1 !important;
+    }
+
+    #chatbot .bubble-wrap {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow-y: auto !important;
     }
 
     #chat button:hover {
