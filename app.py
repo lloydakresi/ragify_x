@@ -237,6 +237,7 @@ CSS = """
         flex: 8.5 !important;
         height: 100% !important;
         overflow-y: scroll;
+        gap: 4px;
     }
 
     #chatbot {
