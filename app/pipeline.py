@@ -1,3 +1,4 @@
+import spaces
 from .ingestion import extract
 from .session import SessionManager, Session
 from .retrieval import retrieval_and_reranking
@@ -7,7 +8,7 @@ from .history import history_management, build_history_string
 from .follow_up import follow_up
 import time
 import os
-import spaces
+
 manager = SessionManager()
 
 @spaces.GPU
