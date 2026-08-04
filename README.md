@@ -5,6 +5,7 @@ A generalized document chat system. Upload any PDF and have a grounded conversat
 Built as Project 3 of 4 in a production ML portfolio. v2 adds multimodal support for documents with images and diagrams. v3 adds knowledge graph retrieval for hierarchical document corpora.
 
 **Live demo:** [lakresi-ragify.hf.space](https://huggingface.co/spaces/lakresi/ragify)
+
 **GitHub:** [github.com/lloydakresi/ragify_x](https://github.com/lloydakresi/ragify_x)
 
 ---
@@ -136,4 +137,5 @@ v3 — Knowledge graph retrieval. Build a graph over hierarchical document corpo
 ## Related
 
 [Project 1 — ArXiv Semantic Search](https://github.com/lloydakresi/arxiv_semantic_search)
+
 [Project 2 — Toxic Comment Moderator](https://github.com/lloydakresi/toxic_comment_moderator_api)
