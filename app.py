@@ -12,7 +12,7 @@ CSS = """
         --paper: #F1F4F7;
         --paper-deep: #E7ECF1;
         --ink: #17212B;
-        --input-box-text:#bed5ed;
+        --input-box-text:#073d75;
         --ink-soft: #4B5A6A;
         --line: #C6D1DB;
         --trace: #2255C4;
