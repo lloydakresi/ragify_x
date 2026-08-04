@@ -2,7 +2,7 @@
 
 A generalized document chat system. Upload any PDF and have a grounded conversation with it. Every answer is cited back to the exact page it came from. If the answer is not in the document the system says so rather than making things up.
 
-Built as Project 3 of 4 in a production ML portfolio. v2 adds multimodal support for documents with images and diagrams. v3 adds knowledge graph retrieval for hierarchical document corpora.
+Built as Project 3 of 4 in a production ML portfolio. v2 will add multimodal support for documents with images and diagrams. v3 will add knowledge graph retrieval for hierarchical document corpora.
 
 **Live demo:** [lakresi-ragify.hf.space](https://huggingface.co/spaces/lakresi/ragify)
 
